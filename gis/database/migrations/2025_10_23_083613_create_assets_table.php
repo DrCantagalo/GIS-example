@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('category')->nullable();
+            $table->double('latitude', 10, 7);
+            $table->double('longitude', 10, 7);
+            $table->json('properties')->nullable(); // campo livre para atributos
             $table->timestamps();
         });
     }
