@@ -1,4 +1,5 @@
 import './bootstrap';
+import.meta.glob(['../images/**']);
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import $ from 'jquery'; // já tens jQuery integrado
