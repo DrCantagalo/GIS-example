@@ -71,7 +71,7 @@ function loadData(filter = 0) {
     // monta lista de categorias
     let html = '';
     stats.byCategory.forEach(c => {
-      html += `<li onclick"loadData('${c.category}')">${c.category}: ${c.cnt}</li>`;
+      html += `<li onclick="loadData('${c.category}')">${c.category}: ${c.cnt}</li>`;
     });
     $('#categories-list').html(html);
   });
