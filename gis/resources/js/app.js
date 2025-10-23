@@ -27,7 +27,7 @@ $(function(){
     }).addTo(map);
 
     // ajusta zoom para mostrar todos os pontos
-    if (layer.getBounds && !layer.getBounds().isEmpty()) {
+    if (layer.getBounds && !layer.getBounds().isValid()) {
       map.fitBounds(layer.getBounds().pad(0.2));
     }
   });
