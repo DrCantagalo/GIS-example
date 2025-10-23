@@ -26,10 +26,13 @@ $(function(){
       }
     }).addTo(map);
 
-    // ajusta zoom para mostrar todos os pontos
-    if (layer.getBounds && !layer.getBounds().isValid()) {
-      map.fitBounds(layer.getBounds().pad(0.2));
-    }
+    // Espera o mapa carregar completamente antes de ajustar os bounds
+    map.whenReady(() => {
+      const bounds = layer.getBounds();
+      if (bounds.isValid()) {
+        map.fitBounds(bounds.pad(0.2));
+      }
+    });
   });
 
   // popular painel com estatísticas
