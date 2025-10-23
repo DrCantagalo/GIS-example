@@ -4,36 +4,63 @@ import.meta.glob(['../images/**']);
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import $ from 'jquery'; // já tens jQuery integrado
+import 'leaflet.markercluster';
 
 $(function(){
   // cria mapa
   const map = L.map('map').setView([41.9, 12.49], 13);
+  const markers = L.markerClusterGroup();
 
   // camada base (OpenStreetMap)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // buscar GeoJSON do backend
-  $.getJSON('/api/assets/geojson', function(data){
-    const layer = L.geoJSON(data, {
-      onEachFeature: function(feature, layer) {
-        const p = feature.properties || {};
-        layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
-      },
-      pointToLayer: function(feature, latlng) {
-        return L.circleMarker(latlng, { radius: 6 });
-      }
-    }).addTo(map);
+  loadData();
+});
 
-    // Espera o mapa carregar completamente antes de ajustar os bounds
-    map.whenReady(() => {
-      const bounds = layer.getBounds();
-      if (bounds.isValid()) {
-        map.fitBounds(bounds.pad(0.2));
-      }
+window.loadData = loadData;
+
+function loadData() {
+    // buscar GeoJSON do backend
+  if($('#cluster').prop('checked') === false) {
+    $.getJSON('/api/assets/geojson', function(data){
+      const layer = L.geoJSON(data, {
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties || {};
+          layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
+        },
+        pointToLayer: function(feature, latlng) {
+          return L.circleMarker(latlng, { radius: 6 });
+        }
+      }).addTo(map);
+
+      // Espera o mapa carregar completamente antes de ajustar os bounds
+      map.whenReady(() => {
+        const bounds = layer.getBounds();
+        if (bounds.isValid()) {
+          map.fitBounds(bounds.pad(0.2));
+        }
+      });
     });
-  });
+  }
+  else{
+    $.getJSON('/api/assets/geojson', function(data) {
+      const layer = L.geoJSON(data, {
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties || {};
+          layer.bindPopup(`<strong>${p.name}</strong><br/>Categoria: ${p.category}`);
+        },
+        pointToLayer: function(feature, latlng) {
+          return L.circleMarker(latlng, { radius: 6 });
+        }
+      });
+      
+      markers.addLayer(layer);
+      map.addLayer(markers);
+      map.fitBounds(markers.getBounds().pad(0.2));
+    });
+  }
 
   // popular painel com estatísticas
   $.getJSON('/api/assets/stats', function(stats){
@@ -45,5 +72,4 @@ $(function(){
     });
     $('#categories-list').html(html);
   });
-});
-
+}
