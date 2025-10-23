@@ -35,7 +35,11 @@ function loadData(filter = 0) {
             layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
           },
           pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, { radius: 6 });
+            return L.circleMarker(latlng, {
+              radius: 6,
+              color: getColor(feature.properties.category),
+              fillOpacity: 0.8
+            });
           }
         }).addTo(map);
 
@@ -54,7 +58,11 @@ function loadData(filter = 0) {
             layer.bindPopup(`<strong>${p.name}</strong><br/>Categoria: ${p.category}`);
           },
           pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, { radius: 6 });
+            return L.circleMarker(latlng, {
+              radius: 6,
+              color: getColor(feature.properties.category),
+              fillOpacity: 0.8
+            });
           }
         });  
         markers.addLayer(layer);
@@ -73,4 +81,14 @@ function loadData(filter = 0) {
     });
     $('#categories-list').html(html);
   });
+}
+
+function getColor(cat) {
+  switch(cat) {
+    case 'station': return 'blue';
+    case 'sensor': return 'red';
+    case 'poi': return 'green';
+    case 'tree': return 'orange';
+    default: return 'gray';
+  }
 }
