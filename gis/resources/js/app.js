@@ -48,7 +48,7 @@ function loadData() {
   }
   else{
     $.getJSON('/api/assets/geojson', function(data) {
-      const layer = L.geoJSON(data, {
+      layer = L.geoJSON(data, {
         onEachFeature: function(feature, layer) {
           const p = feature.properties || {};
           layer.bindPopup(`<strong>${p.name}</strong><br/>Categoria: ${p.category}`);
