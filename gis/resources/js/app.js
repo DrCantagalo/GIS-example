@@ -22,6 +22,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 function loadData() {
     // buscar GeoJSON do backend
+  if(layer) (layer.clearLayers());
   if($('#cluster').prop('checked') === false) {
     $.getJSON('/api/assets/geojson', function(data){
       const layer = L.geoJSON(data, {
