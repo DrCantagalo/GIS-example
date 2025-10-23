@@ -41,6 +41,7 @@
                     <h3>Options</h3>
                     <input type="checkbox" id="cluster"><label for="cluster">Clustering?</label>
                     <button onclick="loadData()">Run</button>
+                    <button onclick="locateUser()">Where I am?</button>
                     <h3>Dashboard</h3>
                     <p>Total: <span id="total-count">—</span></p>
                     <ul id="categories-list"></ul>

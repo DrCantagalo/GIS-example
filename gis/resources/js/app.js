@@ -20,12 +20,16 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-var layer;
+var layer, userMarker, userCircle;
 
 function loadData(filter = 0) {
     // buscar GeoJSON do backend
   if(layer) (layer.clearLayers());
   if(markers) (markers.clearLayers());
+  if (userMarker) {
+    map.removeLayer(userMarker);
+    map.removeLayer(userCircle);
+  }
   $.getJSON('/api/assets/geojson', function(data){
     if (filter) { data.features = data.features.filter(f => f.properties.category === filter)}
       if($('#cluster').prop('checked') === false) {
@@ -91,4 +95,43 @@ function getColor(cat) {
     case 'tree': return 'orange';
     default: return 'gray';
   }
+}
+
+window.locateUser = locateUser;
+
+function locateUser() {
+  if(layer) (layer.clearLayers());
+  if(markers) (markers.clearLayers());
+  map.locate({ enableHighAccuracy: true });
+
+  map.once('locationfound', function(e) {
+    const { latlng, accuracy } = e;
+
+    // remove o marcador anterior (se existir)
+    if (userMarker) {
+      map.removeLayer(userMarker);
+      map.removeLayer(userCircle);
+    }
+    $('#categories-list').html("");
+
+    // adiciona marcador e círculo
+    userMarker = L.marker(latlng)
+      .addTo(map)
+      .bindPopup(`Você está aqui (±${Math.round(accuracy)}m)`)
+      .openPopup();
+
+    userCircle = L.circle(latlng, {
+      radius: accuracy / 2,
+      color: 'blue',
+      fillColor: '#007bff',
+      fillOpacity: 0.2
+    }).addTo(map);
+
+    // centraliza no ponto
+    map.flyTo(latlng, 14, { duration: 1.2 });
+  });
+
+  map.once('locationerror', function() {
+    alert('Não foi possível obter sua localização (verifique permissões de GPS).');
+  });
 }
