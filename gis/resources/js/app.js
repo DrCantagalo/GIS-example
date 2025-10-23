@@ -6,11 +6,18 @@ import L from 'leaflet';
 import $ from 'jquery'; // já tens jQuery integrado
 import 'leaflet.markercluster';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'; // Este é importante para retina/mobile
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
+    iconUrl: markerIcon,
+    iconRetinaUrl: markerIcon2x, // Adicione o 2x
+    shadowUrl: markerShadow,
+    iconSize: [25, 41], // Opcional, mas para garantir o tamanho correto
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41] // Opcional
 });
 
 $(function(){
