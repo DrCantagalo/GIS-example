@@ -27,7 +27,7 @@ function loadData(filter = 0) {
   if(layer) (layer.clearLayers());
   if($('#cluster').prop('checked') === false) {
     $.getJSON('/api/assets/geojson', function(data){
-      if (filter) { data = data.filter(f => f.properties.category === filter)}
+      if (filter) { data.features = data.features.filter(f => f.properties.category === filter)}
       layer = L.geoJSON(data, {
         onEachFeature: function(feature, layer) {
           const p = feature.properties || {};
