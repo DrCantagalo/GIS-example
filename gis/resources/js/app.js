@@ -45,7 +45,7 @@ function loadData() {
     });
   }
   else{
-    $.getJSON('/api/assets/geojson', function(data) {
+    /*$.getJSON('/api/assets/geojson', function(data) {
       const layer = L.geoJSON(data, {
         onEachFeature: function(feature, layer) {
           const p = feature.properties || {};
@@ -59,7 +59,7 @@ function loadData() {
       markers.addLayer(layer);
       map.addLayer(markers);
       map.fitBounds(markers.getBounds().pad(0.2));
-    });
+    });*/
   }
 
   // popular painel com estatísticas
