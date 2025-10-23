@@ -13,7 +13,7 @@ $(function(){
 window.loadData = loadData;
 
 function loadData() {
-    // cria mapa
+  if (L.map('map')) { L.map('map').remove(); }
   let map = L.map('map').setView([41.9, 12.49], 13);
   let markers = L.markerClusterGroup();
 
