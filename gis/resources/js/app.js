@@ -1,4 +1,5 @@
 import './bootstrap';
+import './gsap';
 import.meta.glob(['../images/**']);
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
