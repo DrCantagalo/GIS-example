@@ -25,6 +25,7 @@ var layer;
 function loadData(filter = 0) {
     // buscar GeoJSON do backend
   if(layer) (layer.clearLayers());
+  if(markers) (markers.clearLayers());
   $.getJSON('/api/assets/geojson', function(data){
     if (filter) { data.features = data.features.filter(f => f.properties.category === filter)}
       if($('#cluster').prop('checked') === false) {
