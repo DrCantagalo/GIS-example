@@ -22,11 +22,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 var layer;
 
-function loadData() {
+function loadData(filter = 0) {
     // buscar GeoJSON do backend
   if(layer) (layer.clearLayers());
   if($('#cluster').prop('checked') === false) {
     $.getJSON('/api/assets/geojson', function(data){
+      if (filter) { data = data.filter(f => f.properties.category === filter)}
       layer = L.geoJSON(data, {
         onEachFeature: function(feature, layer) {
           const p = feature.properties || {};
@@ -70,7 +71,7 @@ function loadData() {
     // monta lista de categorias
     let html = '';
     stats.byCategory.forEach(c => {
-      html += `<li>${c.category}: ${c.cnt}</li>`;
+      html += `<li onclick"loadData('${c.category}')">${c.category}: ${c.cnt}</li>`;
     });
     $('#categories-list').html(html);
   });
