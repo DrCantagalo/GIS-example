@@ -12,16 +12,15 @@ $(function(){
 
 window.loadData = loadData;
 
+const map = L.map('map').setView([41.9, 12.49], 13);
+const markers = L.markerClusterGroup();
+
+// camada base (OpenStreetMap)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
 function loadData() {
-  if (L.map('map')) { L.map('map').remove(); }
-  let map = L.map('map').setView([41.9, 12.49], 13);
-  let markers = L.markerClusterGroup();
-
-  // camada base (OpenStreetMap)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
     // buscar GeoJSON do backend
   if($('#cluster').prop('checked') === false) {
     $.getJSON('/api/assets/geojson', function(data){
