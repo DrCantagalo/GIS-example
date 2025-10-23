@@ -20,12 +20,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
+var layer;
+
 function loadData() {
     // buscar GeoJSON do backend
-  if(typeof layer !== 'undefined') (layer.clearLayers());
+  if(layer) (layer.clearLayers());
   if($('#cluster').prop('checked') === false) {
     $.getJSON('/api/assets/geojson', function(data){
-      const layer = L.geoJSON(data, {
+      layer = L.geoJSON(data, {
         onEachFeature: function(feature, layer) {
           const p = feature.properties || {};
           layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
