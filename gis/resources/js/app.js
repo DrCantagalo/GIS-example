@@ -5,6 +5,13 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import $ from 'jquery'; // já tens jQuery integrado
 import 'leaflet.markercluster';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 $(function(){
   loadData();
