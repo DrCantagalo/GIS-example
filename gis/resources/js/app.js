@@ -25,45 +25,42 @@ var layer;
 function loadData(filter = 0) {
     // buscar GeoJSON do backend
   if(layer) (layer.clearLayers());
-  if($('#cluster').prop('checked') === false) {
-    $.getJSON('/api/assets/geojson', function(data){
-      if (filter) { data.features = data.features.filter(f => f.properties.category === filter)}
-      layer = L.geoJSON(data, {
-        onEachFeature: function(feature, layer) {
-          const p = feature.properties || {};
-          layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
-        },
-        pointToLayer: function(feature, latlng) {
-          return L.circleMarker(latlng, { radius: 6 });
-        }
-      }).addTo(map);
+  $.getJSON('/api/assets/geojson', function(data){
+    if (filter) { data.features = data.features.filter(f => f.properties.category === filter)}
+      if($('#cluster').prop('checked') === false) {
+        layer = L.geoJSON(data, {
+          onEachFeature: function(feature, layer) {
+            const p = feature.properties || {};
+            layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
+          },
+          pointToLayer: function(feature, latlng) {
+            return L.circleMarker(latlng, { radius: 6 });
+          }
+        }).addTo(map);
 
-      // Espera o mapa carregar completamente antes de ajustar os bounds
-      map.whenReady(() => {
-        const bounds = layer.getBounds();
-        if (bounds.isValid()) {
-          map.fitBounds(bounds.pad(0.2));
-        }
-      });
-    });
-  }
-  else{
-    $.getJSON('/api/assets/geojson', function(data) {
-      layer = L.geoJSON(data, {
-        onEachFeature: function(feature, layer) {
-          const p = feature.properties || {};
-          layer.bindPopup(`<strong>${p.name}</strong><br/>Categoria: ${p.category}`);
-        },
-        pointToLayer: function(feature, latlng) {
-          return L.circleMarker(latlng, { radius: 6 });
-        }
-      });
-      
-      markers.addLayer(layer);
-      map.addLayer(markers);
-      map.fitBounds(markers.getBounds().pad(0.2));
-    });
-  }
+        // Espera o mapa carregar completamente antes de ajustar os bounds
+        map.whenReady(() => {
+          const bounds = layer.getBounds();
+          if (bounds.isValid()) {
+            map.fitBounds(bounds.pad(0.2));
+          }
+        });
+      }
+      else{
+        layer = L.geoJSON(data, {
+          onEachFeature: function(feature, layer) {
+            const p = feature.properties || {};
+            layer.bindPopup(`<strong>${p.name}</strong><br/>Categoria: ${p.category}`);
+          },
+          pointToLayer: function(feature, latlng) {
+            return L.circleMarker(latlng, { radius: 6 });
+          }
+        });  
+        markers.addLayer(layer);
+        map.addLayer(markers);
+        map.fitBounds(markers.getBounds().pad(0.2));
+      }
+  });
 
   // popular painel com estatísticas
   $.getJSON('/api/assets/stats', function(stats){
