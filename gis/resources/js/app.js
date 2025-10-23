@@ -7,21 +7,21 @@ import $ from 'jquery'; // já tens jQuery integrado
 import 'leaflet.markercluster';
 
 $(function(){
-  // cria mapa
-  const map = L.map('map').setView([41.9, 12.49], 13);
-  const markers = L.markerClusterGroup();
-
-  // camada base (OpenStreetMap)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
   loadData();
 });
 
 window.loadData = loadData;
 
 function loadData() {
+    // cria mapa
+  let map = L.map('map').setView([41.9, 12.49], 13);
+  let markers = L.markerClusterGroup();
+
+  // camada base (OpenStreetMap)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
     // buscar GeoJSON do backend
   if($('#cluster').prop('checked') === false) {
     $.getJSON('/api/assets/geojson', function(data){
@@ -45,7 +45,7 @@ function loadData() {
     });
   }
   else{
-    /*$.getJSON('/api/assets/geojson', function(data) {
+    $.getJSON('/api/assets/geojson', function(data) {
       const layer = L.geoJSON(data, {
         onEachFeature: function(feature, layer) {
           const p = feature.properties || {};
@@ -59,7 +59,7 @@ function loadData() {
       markers.addLayer(layer);
       map.addLayer(markers);
       map.fitBounds(markers.getBounds().pad(0.2));
-    });*/
+    });
   }
 
   // popular painel com estatísticas
