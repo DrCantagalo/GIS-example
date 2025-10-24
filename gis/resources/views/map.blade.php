@@ -34,20 +34,51 @@
                 </span>
             </p>
         </header>
-        <main>
-            <div style="display:flex; gap:16px;">
-                <div id="map" style="width:70%; height:600px; border:1px solid #ccc;"></div>
-                <aside style="width:30%;">
-                    <h3>Options</h3>
-                    <input type="checkbox" id="cluster"><label for="cluster">Clustering?</label>
-                    <button onclick="loadData()">Run</button>
-                    <button onclick="locateUser()">Where I am?</button>
-                    <h3>Dashboard</h3>
-                    <p>Total: <span id="total-count">—</span></p>
-                    <ul id="categories-list"></ul>
+        <main class="w-full min-h-screen bg-gray-50 flex items-start justify-center p-4">
+            <div class="flex flex-col md:flex-row gap-4 w-full max-w-7xl">
+                <!-- Mapa -->
+                <div id="map"
+                class="w-full md:w-2/3 h-[400px] md:h-[600px] border border-gray-300 rounded-2xl shadow-sm overflow-hidden">
+                </div>
+
+                <!-- Painel lateral -->
+                <aside
+                class="w-full md:w-1/3 bg-white border border-gray-200 rounded-2xl shadow-sm p-4 flex flex-col justify-start">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Opções</h3>
+
+                <div class="flex items-center gap-2 mb-3">
+                    <input type="checkbox" id="cluster" class="w-4 h-4 text-blue-600 rounded">
+                    <label for="cluster" class="text-sm text-gray-700">Clustering</label>
+                </div>
+
+                <div class="flex gap-2 mb-5">
+                    <button onclick="loadData()"
+                    class="flex-1 bg-blue-600 text-white font-medium px-3 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Atualizar
+                    </button>
+                    <button onclick="locateUser()"
+                    class="flex-1 bg-green-600 text-white font-medium px-3 py-2 rounded-lg hover:bg-green-700 transition">
+                    Onde estou?
+                    </button>
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Dashboard</h3>
+                <p class="text-sm text-gray-600 mb-2">
+                    Total: <span id="total-count" class="font-bold text-gray-900">—</span>
+                </p>
+
+                <ul id="categories-list" class="space-y-1 text-sm text-gray-700 cursor-pointer">
+                    <!-- Itens são inseridos dinamicamente -->
+                </ul>
+
+                <!-- Rodapé opcional -->
+                <div class="mt-auto pt-4 text-xs text-gray-500 border-t">
+                    <p>Exemplo GIS em Laravel + Leaflet</p>
+                </div>
                 </aside>
             </div>
         </main>
+
         <footer class="w-full py-4 bg-gray-100 text-center text-sm text-gray-600">
             <a href="https://cantagalo.it/legal" 
             class="hover:text-gray-800 hover:font-medium transition">
