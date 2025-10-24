@@ -123,39 +123,57 @@ function getColor(cat) {
 window.locateUser = locateUser;
 
 function locateUser() {
-  if(layer) (layer.clearLayers());
-  if(markers) (markers.clearLayers());
+  // Clear other layers to focus on the user location
+  if (layer) layer.clearLayers();
+  if (markers) markers.clearLayers();
+
+  // Trigger geolocation with high accuracy (best effort)
   map.locate({ enableHighAccuracy: true });
 
-  map.once('locationfound', function(e) {
+  // Success event
+  map.once('locationfound', function (e) {
     const { latlng, accuracy } = e;
 
-    // remove o marcador anterior (se existir)
+    // Remove previous user marker/circle if any
     if (userMarker) {
       map.removeLayer(userMarker);
       map.removeLayer(userCircle);
     }
+
+    // Reset dashboard
     $('#total-count').text('1');
-    $('#categories-list').html("<li>YOU</li>");
+    $('#categories-list').html('');
 
-    // adiciona marcador e círculo
-    userMarker = L.marker(latlng)
-      .addTo(map)
-      .bindPopup(`Você está aqui (±${Math.round(accuracy)}m)`)
-      .openPopup();
-
-    userCircle = L.circle(latlng, {
-      radius: accuracy / 2,
-      color: 'blue',
-      fillColor: '#007bff',
-      fillOpacity: 0.2
+    // Add marker for the user position
+    userMarker = L.marker(latlng, {
+      title: 'Your current position'
     }).addTo(map);
 
-    // centraliza no ponto
+    // Add accuracy circle (half the accuracy radius looks good)
+    userCircle = L.circle(latlng, {
+      radius: accuracy / 2,
+      color: '#2563eb', // Tailwind blue-600
+      fillColor: '#3b82f6', // Tailwind blue-500
+      fillOpacity: 0.25
+    }).addTo(map);
+
+    // Show popup info with formatted coordinates
+    const coords = `${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}`;
+    userMarker.bindPopup(`
+      <div class="text-sm">
+        <strong>You are here</strong><br>
+        Accuracy: ±${Math.round(accuracy)} m<br>
+        <span class="text-gray-500">${coords}</span>
+      </div>
+    `).openPopup();
+
+    // Smooth zoom and pan
     map.flyTo(latlng, 14, { duration: 1.2 });
   });
 
-  map.once('locationerror', function() {
-    alert('Não foi possível obter sua localização (verifique permissões de GPS).');
+  // Error event
+  map.once('locationerror', function (err) {
+    console.warn('Geolocation error:', err);
+    alert('Unable to get your location — check GPS permissions or try again.');
   });
 }
