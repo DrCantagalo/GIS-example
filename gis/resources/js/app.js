@@ -37,66 +37,75 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 var layer, userMarker, userCircle;
 
 function loadData(filter = 0) {
-    // buscar GeoJSON do backend
-  if(layer) (layer.clearLayers());
-  if(markers) (markers.clearLayers());
+  // Clean up previous layers
+  if (layer) layer.clearLayers();
+  if (markers) markers.clearLayers();
   if (userMarker) {
     map.removeLayer(userMarker);
     map.removeLayer(userCircle);
   }
-  $.getJSON('/api/assets/geojson', function(data){
-    if (filter) { data.features = data.features.filter(f => f.properties.category === filter)}
-      if($('#cluster').prop('checked') === false) {
-        layer = L.geoJSON(data, {
-          onEachFeature: function(feature, layer) {
-            const p = feature.properties || {};
-            layer.bindPopup(`<strong>${p.name||'--'}</strong><br/>Categoria: ${p.category||'--'}`);
-          },
-          pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 6,
-              color: getColor(feature.properties.category),
-              fillOpacity: 0.8
-            });
-          }
-        }).addTo(map);
 
-        // Espera o mapa carregar completamente antes de ajustar os bounds
-        map.whenReady(() => {
-          const bounds = layer.getBounds();
-          if (bounds.isValid()) {
-            map.fitBounds(bounds.pad(0.2));
-          }
-        });
-      }
-      else{
-        layer = L.geoJSON(data, {
-          onEachFeature: function(feature, layer) {
-            const p = feature.properties || {};
-            layer.bindPopup(`<strong>${p.name}</strong><br/>Categoria: ${p.category}`);
-          },
-          pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 6,
-              color: getColor(feature.properties.category),
-              fillOpacity: 0.8
-            });
-          }
-        });  
-        markers.addLayer(layer);
-        map.addLayer(markers);
-        map.fitBounds(markers.getBounds().pad(0.2));
-      }
+  // Fetch GeoJSON data
+  $.getJSON('/api/assets/geojson', function (data) {
+    // Apply filter if selected
+    if (filter) {
+      data.features = data.features.filter(f => f.properties.category === filter);
+    }
+
+    // Common function to create circle markers
+    const pointToLayer = (feature, latlng) => {
+      return L.circleMarker(latlng, {
+        radius: 6,
+        color: getColor(feature.properties.category),
+        fillOpacity: 0.8
+      });
+    };
+
+    // Build the layer
+    if (!$('#cluster').prop('checked')) {
+      layer = L.geoJSON(data, {
+        onEachFeature: function (feature, lyr) {
+          const p = feature.properties || {};
+          lyr.bindPopup(`<strong>${p.name || '--'}</strong><br/>Category: ${p.category || '--'}`);
+        },
+        pointToLayer
+      }).addTo(map);
+
+      map.whenReady(() => {
+        const bounds = layer.getBounds();
+        if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
+      });
+    } else {
+      layer = L.geoJSON(data, {
+        onEachFeature: function (feature, lyr) {
+          const p = feature.properties || {};
+          lyr.bindPopup(`<strong>${p.name}</strong><br/>Category: ${p.category}`);
+        },
+        pointToLayer
+      });
+      markers.addLayer(layer);
+      map.addLayer(markers);
+      const bounds = markers.getBounds();
+      if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
+    }
   });
 
-  // popular painel com estatísticas
-  $.getJSON('/api/assets/stats', function(stats){
+  // Populate stats panel
+  $.getJSON('/api/assets/stats', function (stats) {
     $('#total-count').text(stats.total);
-    // monta lista de categorias
+
     let html = '';
     stats.byCategory.forEach(c => {
-      html += `<li onclick="loadData('${c.category}')">${c.category}: ${c.cnt}</li>`;
+      const color = getColor(c.category);
+      html += `
+        <li onclick="loadData('${c.category}')"
+            class="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer transition">
+          <span class="inline-block w-3 h-3 rounded-full" style="background:${color};"></span>
+          <span class="flex-1 text-gray-800">${c.category}</span>
+          <span class="text-xs text-gray-500">${c.cnt}</span>
+        </li>`;
     });
+
     $('#categories-list').html(html);
   });
 }
@@ -126,7 +135,8 @@ function locateUser() {
       map.removeLayer(userMarker);
       map.removeLayer(userCircle);
     }
-    $('#categories-list').html("");
+    $('#total-count').text('1');
+    $('#categories-list').html("<li>YOU</li>");
 
     // adiciona marcador e círculo
     userMarker = L.marker(latlng)
