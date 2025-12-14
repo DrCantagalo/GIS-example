@@ -44,7 +44,7 @@
                 <!-- Painel lateral -->
                 <aside
                 class="w-full md:w-1/3 bg-white border border-gray-200 rounded-2xl shadow-sm p-4 flex flex-col justify-start">
-                <h3 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Options</h3>
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-1">Opções</h3>
 
                 <div class="flex items-center gap-2 mb-3">
                     <input type="checkbox" id="cluster" class="w-4 h-4 text-blue-600 rounded">
@@ -54,11 +54,11 @@
                 <div class="flex gap-2 mb-5">
                     <button onclick="loadData()"
                     class="flex-1 bg-blue-600 text-white font-medium px-3 py-2 rounded-lg hover:bg-blue-700 transition">
-                    Update
+                    Atualizar
                     </button>
                     <button onclick="locateUser()"
                     class="flex-1 bg-green-600 text-white font-medium px-3 py-2 rounded-lg hover:bg-green-700 transition">
-                    Where I am?
+                    Onde estou?
                     </button>
                 </div>
 
@@ -73,11 +73,12 @@
 
                 <!-- Rodapé opcional -->
                 <div class="mt-auto pt-4 text-xs text-gray-500 border-t">
-                    <p>Example GIS in Laravel + Leaflet</p>
+                    <p>Exemplo GIS em Laravel + Leaflet</p>
                 </div>
                 </aside>
             </div>
         </main>
+
         <footer class="w-full py-4 bg-gray-100 text-center text-sm text-gray-600">
             <a href="https://cantagalo.it/legal" 
             class="hover:text-gray-800 hover:font-medium transition">
