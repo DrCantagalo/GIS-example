@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Contracts\AuthorizationViewResponse;
-use Laravel\Passport\Http\Responses\AuthorizationViewResponse as PassportAuthorizationViewResponse;
+use Laravel\Passport\Passport;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -15,8 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            AuthorizationViewResponse::class,
-            PassportAuthorizationViewResponse::class
+
         );
     }
 
@@ -25,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Passport::authorizationView('passport.authorize');
     }
 }
