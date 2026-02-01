@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3c16cb86c42230c6c023d9a5d9bcf42",
+    "content-hash": "623550aa4d59539e7a4834e3b96e554f",
     "packages": [
         {
             "name": "brick/math",
@@ -441,6 +441,54 @@
                 }
             ],
             "time": "2024-10-09T13:47:03+00:00"
+        },
+        {
+            "name": "drcantagalo/laravel-monitor",
+            "version": "v0.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DrCantagalo/laravel-monitor.git",
+                "reference": "4ae8b0a94833284842be47bd7381847bdfbf10d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DrCantagalo/laravel-monitor/zipball/4ae8b0a94833284842be47bd7381847bdfbf10d7",
+                "reference": "4ae8b0a94833284842be47bd7381847bdfbf10d7",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^11.0|^12.0",
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Drcantagalo\\LaravelMonitor\\MonitorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drcantagalo\\LaravelMonitor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michel Cantagalo",
+                    "email": "cantagalo@gmail.com"
+                }
+            ],
+            "description": "A lightweight Laravel package providing CRM tools, access monitoring, and anti-scraper protection.",
+            "support": {
+                "issues": "https://github.com/DrCantagalo/laravel-monitor/issues",
+                "source": "https://github.com/DrCantagalo/laravel-monitor/tree/v0.1.7"
+            },
+            "time": "2025-12-31T16:28:15+00:00"
         },
         {
             "name": "egulias/email-validator",
