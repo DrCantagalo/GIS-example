@@ -20,8 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::routes();
-
         // Isso diz ao Passport: "Quando alguém pedir autorização, mostre esta view"
         Passport::authorizesRequestsVia(function () {
             return view('vendor.passport.authorize');
