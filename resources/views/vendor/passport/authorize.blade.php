@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container"> {{-- mensagem de autorizaçao para apps terceiros --}}
     <h1>Autorizar Acesso</h1>
     <p>O sistema <strong>Laravel Cantagalo</strong> quer acessar seus dados.</p>
 

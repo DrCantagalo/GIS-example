@@ -21,10 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::authorizationView('vendor.passport.authorize');
+        Passport::authorizationView('vendor.passport.authorize'); //define o view do autorizaçao do passport
 
-        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::tokensExpireIn(now()->addDays(15)); //validade do access_token
 
-        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::refreshTokensExpireIn(now()->addDays(30)); //validade do refresh_token
     }
 }

@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'passport', // Aqui é onde a mágica acontece
+            'driver' => 'passport', // Adicionei para funcionar guard do passport
             'provider' => 'users',
         ],
     ],

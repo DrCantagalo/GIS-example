@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/assets/geojson', [\App\Http\Controllers\AssetController::class, 'geojson']);
 Route::get('/assets/stats', [\App\Http\Controllers\AssetController::class, 'stats']);
 
-Route::post('userdata', function() {
+Route::post('userdata', function() { //ve por token passport user data
     $user = Auth::user();
     return $user;
 })->middleware('auth:api');
